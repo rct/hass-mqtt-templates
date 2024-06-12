@@ -9,7 +9,7 @@ the information needed. There are tradeoffs for both manual configuration and
 autodiscovery. Discussion on static YAML config vs. autodiscovery via
 JSON and MQTT will be provided on the GitHub repo.  
 
-(@todo -- Add a motivation file to this repo)
+See [FAQ and Motivation](FAQ_and_Motivation.md) for more background.
 
 ## How this works
 
