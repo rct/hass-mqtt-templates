@@ -4,7 +4,7 @@
 
 sensor_templates:
     honeywell_security:
-      - "test_honeywell2.j2"
+      - "honeywell_security_contact.j2"
       - "generic_battery_ok.j2"
       - "generic_rssi_snr_noise.j2"
 
