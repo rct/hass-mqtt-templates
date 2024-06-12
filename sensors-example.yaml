@@ -1,0 +1,26 @@
+---
+# 
+# Example Honeywell Security Sensor definitions
+
+honeywell_security:
+- esn: 123456
+  name: "Front Door"
+  type: "door"
+  model: "Honeywell 5800mini"
+  area: "Foyer"
+  description: "Main Entrance Active Door"
+  model_comment: "4th 5800mini"
+  zone: 1
+
+
+- esn: 654321
+  name: "Guest Bedroom Window"
+  type: "Window"
+  model: "Versa Mini"
+  manufacturer: "Versa"
+  area: "Guest Bedroom"
+  description: "Guest Bedroom East Window"
+  model_comment: "Versa Mini, 1st from 2nd batch"
+  channel: 10
+  rtl_433_contact_field: "reed_open"
+  zone: 18

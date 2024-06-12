@@ -1,0 +1,124 @@
+---
+#
+# Test Honeywell Security 5800 jinja template.
+
+mqtt:
+  binary_sensor:
+    - name: "Door"  # TODO "Door"
+      object_id: "front_door_sensor_door" # TODO "front_door_contact" 
+      unique_id: "rtl_433_honeywell_8_123456_door" # "rtl_433_honeywell_123456_contact"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/contact_open"    # "rtl_433/+/devices/Honeywell-Security/8/123456/contact_open"
+      payload_on: 1 # open
+      payload_off: 0 # closed
+      device_class: "door"
+      force_update: true # Needed?
+      expire_after: "7200"
+      device:
+        name: "Front Door Sensor" # "Front Door Sensor"
+        model: "Honeywell 5800mini"     # "5800 Mini"
+        manufacturer: "Honeywell"   # "Honeywell"
+        identifiers: "rtl_433_honeywell_8_123456" # "rtl_433_honeywell_123456"
+        suggested_area: "Foyer"   # "Foyer"
+
+    - name: "Tamper"
+      object_id: "front_door_sensor_tamper" # "front_door_sensor_tamper"
+      unique_id: "rtl_433_honeywell_8_123456_tamper" # "rtl_433_honeywell_123456_tamper"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/tamper"   # "rtl_433/+/devices/Honeywell-Security/8/123456/tamper"
+      payload_on: 1 # open
+      payload_off: 0 # closed
+      device_class: safety
+      force_update: true # Needed?
+      expire_after: "7200"
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"
+
+    # Event or Heartbeat, inverted to make event == True
+    # TODO - should this be considered a diagnostic entity?
+    - name: "Event"
+      object_id: "front_door_sensor_event" # "front_door_sensor_event"
+      unique_id: "rtl_433_honeywell_8_123456_event" #"rtl_433_honeywell_123456_event"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/heartbeat"   # "rtl_433/+/devices/Honeywell-Security/8/123456/heartbeat"
+      payload_on: 0 # 0 == event
+      payload_off: 1 # 1 == heartbeat
+      force_update: true # Needed?
+      expire_after: "7200"
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"
+
+  sensor:
+    # Device undecoded status byte for diagnostic purposes
+    # Honeywell-Security misnamed as "event", should be renamed in decoder
+    - name: "Status"
+      object_id: "front_door_sensor_status" # "front_door_sensor_status"
+      unique_id: "rtl_433_honeywell_8_123456_status" # "rtl_433_honeywell_123456_event" 
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/event"   # "rtl_433/+/devices/Honeywell-Security/8/123456/event"
+      force_update: true # Needed?
+      expire_after: "7200"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"---
+#
+# rtl_433 mqtt template for simple battery_ok field
+#
+
+sensor:
+    - name: "Battery"
+      object_id: "front_door_sensor_battery" # "front_door_sensor_battery"
+      unique_id: "rtl_433_honeywell_8_123456_battery" # "rtl_433_honeywell_123456_battery"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/battery_ok"   # "rtl_433/+/devices/Honeywell-Security/8/123456/battery_ok"
+      value_template: "{{ float(value|int) * 99 + 1 }}"
+      device_class: battery
+      unit_of_measurement: "%"
+      force_update: true # Needed?
+      expire_after: "7200"
+      entity_category: diagnostic
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"---
+#
+# rtl_433 mqtt sensor mapping for signal level entities RSSI, SNR, Noise
+#
+
+sensor:
+    - name: "RSSI"
+      object_id: "front_door_sensor_rssi" # "front_door_sensor_rssi"
+      unique_id: "rtl_433_honeywell_8_123456_rssi" # "rtl_433_honeywell_123456_rssi"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/rssi" # "rtl_433/+/devices/Honeywell-Security/8/123456/rssi"
+      value_template: "{{ value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "7200"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"
+
+    - name: "SNR"
+      object_id: "front_door_sensor_snr" # "front_door_sensor_snr"
+      unique_id: "rtl_433_honeywell_8_123456_snr" # "rtl_433_honeywell_123456_snr"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/snr"   # "rtl_433/+/devices/Honeywell-Security/8/123456/snr"
+      value_template: "{{ value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "7200"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"
+
+    - name: "noise"
+      object_id: "front_door_sensor_noise" # "front_door_sensor_noise"
+      unique_id: "rtl_433_honeywell_8_123456_noise" # "rtl_433_honeywell_123456_noise"
+      state_topic: "rtl_433/+/devices/Honeywell-Security/8/123456/noise"   # "rtl_433/+/devices/Honeywell-Security/8/123456/noise"
+      value_template: "{{ value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "7200"
+      entity_category: diagnostic
+      enabled_by_default: false
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "rtl_433_honeywell_8_123456"

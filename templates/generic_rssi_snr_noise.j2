@@ -1,0 +1,48 @@
+---
+#
+# rtl_433 mqtt sensor mapping for signal level entities RSSI, SNR, Noise
+#
+
+sensor:
+    - name: "RSSI"
+      object_id: "{{ device_name_safe + '_rssi' }}" # "front_door_sensor_rssi"
+      unique_id: "{{ device_unique_id + '_rssi' }}" # "rtl_433_honeywell_123456_rssi"
+      state_topic: "{{ device_topic + '/rssi' }}" # "rtl_433/+/devices/Honeywell-Security/8/123456/rssi"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    - name: "SNR"
+      object_id: "{{ device_name_safe + '_snr' }}" # "front_door_sensor_snr"
+      unique_id: "{{ device_unique_id + '_snr' }}" # "rtl_433_honeywell_123456_snr"
+      state_topic: "{{ device_topic + '/snr' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/snr"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    - name: "noise"
+      object_id: "{{ device_name_safe + '_noise' }}" # "front_door_sensor_noise"
+      unique_id: "{{ device_unique_id + '_noise' }}" # "rtl_433_honeywell_123456_noise"
+      state_topic: "{{ device_topic + '/noise' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/noise"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      enabled_by_default: false
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"

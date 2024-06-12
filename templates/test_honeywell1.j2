@@ -1,0 +1,117 @@
+---
+#
+# Test Honeywell Security 5800 jinja template.
+
+mqtt:
+  binary_sensor:
+    - name: "{{ contact_short_name | title }}"  # TODO "Door"
+      object_id: "{{ device_name_safe + '_' + contact_short_name }}" # TODO "front_door_contact" 
+      unique_id: "{{ device_unique_id + '_' + contact_short_name }}" # "rtl_433_honeywell_123456_contact"
+      state_topic: "{{ device_topic + '/' + contact_sub_topic }}"    # "rtl_433/+/devices/Honeywell-Security/8/123456/contact_open"
+      payload_on: 1 # open
+      payload_off: 0 # closed
+      device_class: "{{ device_primary_class }}"
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      device:
+        name: "{{ device_name_pretty }}" # "Front Door Sensor"
+        model: "{{ device_model }}"     # "5800 Mini"
+        manufacturer: "{{ device_manufacturer }}"   # "Honeywell"
+        identifiers: "{{ device_unique_id }}" # "rtl_433_honeywell_123456"
+        suggested_area: "{{ device_area }}"   # "Foyer"
+
+    - name: "Tamper"
+      object_id: "{{ device_name_safe + '_tamper' }}" # "front_door_sensor_tamper"
+      unique_id: "{{ device_unique_id + '_tamper' }}" # "rtl_433_honeywell_123456_tamper"
+      state_topic: "{{ device_topic + '/tamper' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/tamper"
+      payload_on: 1 # open
+      payload_off: 0 # closed
+      device_class: safety
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    # Event or Heartbeat, inverted to make event == True
+    # TODO - should this be considered a diagnostic entity?
+    - name: "Event"
+      object_id: "{{ device_name_safe + '_event' }}" # "front_door_sensor_event"
+      unique_id: "{{ device_unique_id + '_event' }}" #"rtl_433_honeywell_123456_event"
+      state_topic: "{{ device_topic + '/heartbeat' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/heartbeat"
+      payload_on: 0 # 0 == event
+      payload_off: 1 # 1 == heartbeat
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+  sensor:
+    # Device undecoded status byte for diagnostic purposes
+    # Honeywell-Security misnamed as "event", should be renamed in decoder
+    - name: "Status"
+      object_id: "{{ device_name_safe + '_status' }}" # "front_door_sensor_status"
+      unique_id: "{{ device_unique_id + '_status' }}" # "rtl_433_honeywell_123456_event" 
+      state_topic: "{{ device_topic + '/event' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/event"
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+# TODO Everything below this line are generic rtl_433 sensors
+    - name: "Battery"
+      object_id: "{{ device_name_safe + '_battery' }}" # "front_door_sensor_battery"
+      unique_id: "{{ device_unique_id + '_battery' }}" # "rtl_433_honeywell_123456_battery"
+      state_topic: "{{ device_topic + '/battery_ok' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/battery_ok"
+      value_template: "{{ '{{' }} float(value|int) * 99 + 1 }}"
+      device_class: battery
+      unit_of_measurement: "%"
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    - name: "RSSI"
+      object_id: "{{ device_name_safe + '_rssi' }}" # "front_door_sensor_rssi"
+      unique_id: "{{ device_unique_id + '_rssi' }}" # "rtl_433_honeywell_123456_rssi"
+      state_topic: "{{ device_topic + '/rssi' }}" # "rtl_433/+/devices/Honeywell-Security/8/123456/rssi"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    - name: "SNR"
+      object_id: "{{ device_name_safe + '_snr' }}" # "front_door_sensor_snr"
+      unique_id: "{{ device_unique_id + '_snr' }}" # "rtl_433_honeywell_123456_snr"
+      state_topic: "{{ device_topic + '/snr' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/snr"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"
+
+    - name: "noise"
+      object_id: "{{ device_name_safe + '_noise' }}" # "front_door_sensor_noise"
+      unique_id: "{{ device_unique_id + '_noise' }}" # "rtl_433_honeywell_123456_noise"
+      state_topic: "{{ device_topic + '/noise' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/noise"
+      value_template: "{{ '{{' }} value|float|round(2) }}"
+      unit_of_measurement: "dB"
+      device_class: signal_strength
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      enabled_by_default: false
+      # todo eventually should be disabled by default?
+      device:
+        identifiers: "{{ device_unique_id }}"

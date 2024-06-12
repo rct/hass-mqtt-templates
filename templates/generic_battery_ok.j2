@@ -1,0 +1,18 @@
+---
+#
+# rtl_433 mqtt template for simple battery_ok field
+#
+
+sensor:
+    - name: "Battery"
+      object_id: "{{ device_name_safe + '_battery' }}" # "front_door_sensor_battery"
+      unique_id: "{{ device_unique_id + '_battery' }}" # "rtl_433_honeywell_123456_battery"
+      state_topic: "{{ device_topic + '/battery_ok' }}"   # "rtl_433/+/devices/Honeywell-Security/8/123456/battery_ok"
+      value_template: "{{ '{{' }} float(value|int) * 99 + 1 }}"
+      device_class: battery
+      unit_of_measurement: "%"
+      force_update: true # Needed?
+      expire_after: "{{ device_unavailable_seconds }}"
+      entity_category: diagnostic
+      device:
+        identifiers: "{{ device_unique_id }}"
