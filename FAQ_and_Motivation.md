@@ -56,5 +56,20 @@ The way the script currently works is that if there is a field in a rtl_433 mess
 
 Where this becomes a problem is when devices have different intepreatations of  `state` or `contact_open`. It is complicated for cases (some security devices) where the way a device is used determines which fields should be used. 
 
+## Why are there two sets of variable names such as `name` and `device_name_pretty`? 
+
+Currently there is a level of indirection in the script that turns YAML names from the source file into longer more processed names that the generated Home Assistant config template uses. For example, the value of `name:` gets mapped into a Jinja2 variable called `device_name_pretty`.
+
+This is an area that needs more thought. But the reasons I implemented it this way are:
+
+* The ability to drive more than just Home Assistant configuration.
+* Recognizing that some target system specific processing might be needed.
+* Avoiding redundancy in the source data to get pretty and YAML safe names `Front Door` vs `front_door` 
+
+For the PoC this is implmeneted in a quick and dirty function `process_honeywell`.
+
+This needs more thought about generalizing this but not turning this into too much of it's own DSL, etc.
+
+
 (@todo)
 
