@@ -1,6 +1,12 @@
 ---
 #
-# Test Honeywell Security 5800 jinja template.
+# Honeywell Security 5800 contact jinja template 
+# MQTT Sensor configuration for Honeywell Honeywell 5800mini Front Door Sensor 
+#
+# Auto Generated from:
+# Template File: honeywell_security_contact.j2
+# Date Generated: 2024-06-13 15:54:13.472780
+# 
 
 mqtt:
   binary_sensor:
@@ -60,7 +66,8 @@ mqtt:
         identifiers: "rtl_433_honeywell_8_123456"---
 #
 # rtl_433 mqtt template for simple battery_ok field
-#
+# Auto generated from:
+# Template File: generic_battery_ok.j2
 
 sensor:
     - name: "Battery"
@@ -78,6 +85,8 @@ sensor:
 #
 # rtl_433 mqtt sensor mapping for signal level entities RSSI, SNR, Noise
 #
+# Auto generated from:
+# Template File: generic_rssi_snr_noise.j2
 
 sensor:
     - name: "RSSI"

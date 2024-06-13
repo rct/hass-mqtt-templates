@@ -176,6 +176,10 @@ def main():
         for template_file in template_list:
             template = jenv.get_template(template_file)
 
+            # Make some global variables available to templates
+            template.globals['now'] = datetime.datetime.utcnow # make reference to method available
+            template.globals['template_source_file'] = template_file
+
             log.debug(f"Processing sensor {sensor} with {template_file}")
 
             out_yaml = template.render(jv)

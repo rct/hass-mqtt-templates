@@ -101,6 +101,27 @@ In that environment, PyYAML is already installed but you need to add Jinja2 by r
 
 `apk add py3-jinja2`
 
+## Creating new templates
+
+* Use example Honeywell template as a starting point.
+* determine if changes to the mapping function `process_honeywell` are needed.
+That part is the main work in progress for this script.
+
+
+### NOTE - Home Assistant template code needs to be quoted
+
+If your template contains templates for Home Assistant like:
+
+`value_template: "{{ float(value|int) * 99 + 1 }}"`
+
+You need to quote it to prevent it being interpreted by this config file generator.
+Usually the easiest way to do this is to provide a quoted `'{{'`.  That will be passed
+through as a literal and so the rest won't be interpreted.
+
+`value_template: "{{ '{{' }} float(value|int) * 99 + 1 }}"` 
+
+
+* Remember to quote any Home Assistant templ
 ## Who this is for
 
 At this stage this is only intended to be a proof of concept for exploration
