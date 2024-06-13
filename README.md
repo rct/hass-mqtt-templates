@@ -121,7 +121,6 @@ through as a literal and so the rest won't be interpreted.
 `value_template: "{{ '{{' }} float(value|int) * 99 + 1 }}"` 
 
 
-* Remember to quote any Home Assistant templ
 ## Who this is for
 
 At this stage this is only intended to be a proof of concept for exploration
