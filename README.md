@@ -60,7 +60,7 @@ sensor_templates:
 See the directory `out-example` for the generated sensor configuration files:
 
 * [Honeywell 5800mini used as a door sensor](out-example/rtlmqtt_front_door_sensor.yaml)
-* [Versa/2Gig Mini used as a window sensor](rtlmqtt_guest_bedroom_window_sensor.yaml)
+* [Versa/2Gig Mini used as a window sensor](out-example/rtlmqtt_guest_bedroom_window_sensor.yaml)
 
 These two examples show:
 
