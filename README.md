@@ -52,12 +52,23 @@ each sensor defined under a given key like "honeywell_security".
 ```yaml
 sensor_templates:
     honeywell_security:
-      - "test_honeywell2.j2"
+      - "honeywell_security_contact.j2"
       - "generic_battery_ok.j2"
       - "generic_rssi_snr_noise.j2"
 ```
 
-See the directory `out-example` for the generated sensor configuration files.
+See the directory `out-example` for the generated sensor configuration files:
+
+* [Honeywell 5800mini used as a door sensor](out-example/rtlmqtt_front_door_sensor.yaml)
+* [Versa/2Gig Mini used as a window sensor](rtlmqtt_guest_bedroom_window_sensor.yaml)
+
+These two examples show:
+
+* Starting with the desired name for the device so it can be used consistently throughout.
+* Defining the correct Home Assistant device class `door` vs `window` so the icons and text match the way the device is used.
+* Making device specific model and manufacturer available to Home Assistant.
+* Two very similar but slightly different sensors (Honeywell 5800mini vs Versa/2Gig mini). rtl_433 decodes both as `Honeywell-Security`. The only difference in the message is that all Honeywell devices use `channel = 8`, where the Versa Mini's use `channel = 10`. This isn't actually an identifier for the sensor but rather than manufacturer.
+ 
 
 ## Adding the generated files to Home Assistant.
 
