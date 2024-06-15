@@ -24,3 +24,24 @@ honeywell_security:
   channel: 10
   rtl_433_contact_field: "reed_open"
   zone: 18
+
+dsc_security:
+- esn: 1234567
+  name: "Side Door"
+  type: "door"
+  model: "WS4945"
+  manufacturer: "DSC"
+  area: "Utility Room"
+  description: "Side Door entrance to Utility Room"
+  model_comment: "Spare DSC WS4945 from somewhere"
+
+demo_templates:
+- esn: 1234567
+  name: "Demo Template 1"
+  type: "door"
+  model: "WS4945"
+  manufacturer: "DSC"
+  area: "Test Area"
+  description: "Some description of device, might be wordy"
+  model_comment: "Some info about device I want to remember"
+

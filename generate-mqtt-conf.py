@@ -159,6 +159,8 @@ def main():
                               trim_blocks=True,
                               lstrip_blocks=True)
     
+    # Add some custom Jinja2 filters
+    jenv.filters['yaml_sanitize'] = yaml_sanitize
 
     for sensor_group in sensors:
         template_list = sensor_templates[sensor_group]
@@ -167,41 +169,54 @@ def main():
 
         
 
-    for sensor in sensors[sensor_group]:
+        for sensor in sensors[sensor_group]:
 
-        jv = process_honeywell(sensor) # Load & convert sensor definition into Jinja ready vars
+            jv = process_honeywell(sensor) # Load & convert sensor definition into Jinja ready vars
 
-        out = ""
+            out = ""
 
-        for template_file in template_list:
-            template = jenv.get_template(template_file)
+            # @todo multiple teemplate file processing - see docs
+            # 1. {% include 'foo.j2' %} in template provides more control to Jinja
+            #    These will all have the same context. 
+            # 2. Multiple templates processed this way will each have a different context
+            #    
+            # @todo - is there a way to process multiple templates with the same context
+            #    without using include?   Could concatenate the files and process as one
+            
+            # @todo, is it bett
 
-            # Make some global variables available to templates
-            template.globals['now'] = datetime.datetime.utcnow # make reference to method available
-            template.globals['template_source_file'] = template_file
+            for template_file in template_list:
+                template = jenv.get_template(template_file)
 
-            log.debug(f"Processing sensor {sensor} with {template_file}")
+                # Make some global variables available to templates
+                template.globals['now'] = datetime.datetime.utcnow # make reference to method available
+                template.globals['template_source_file'] = template_file
+                template.globals['source'] = sensor
 
-            out_yaml = template.render(jv)
+                
 
-            out += out_yaml
+                log.debug(f"Processing sensor {sensor} with {template_file}")
 
-        if not args.dryrun: 
-            output_filename = os.path.join(args.output_dir, f"rtlmqtt_{jv['device_name_safe']}.yaml")
+                out_yaml = template.render(jv)
 
-            log.info(f"Writing {output_filename}")
+                out += out_yaml
 
-            of = open(output_filename, "wt")
-            of.write(out)
-            of.close()
-        else:
-            print()
-            print("=" * 76)
-            print(f"rtlmqtt_{jv['device_name_safe']}.yaml")
-            print("=" * 76)
+            if not args.dryrun: 
+                output_filename = os.path.join(args.output_dir, f"rtlmqtt_{jv['device_name_safe']}.yaml")
 
-            print(out)
-            print()
+                log.info(f"Writing {output_filename}")
+
+                of = open(output_filename, "wt")
+                of.write(out)
+                of.close()
+            else:
+                print()
+                print("=" * 76)
+                print(f"rtlmqtt_{jv['device_name_safe']}.yaml")
+                print("=" * 76)
+
+                print(out)
+                print()
 
 
 

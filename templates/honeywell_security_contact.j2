@@ -1,10 +1,12 @@
 ---
 #
-# Honeywell Security 5800 contact jinja template 
+{# Honeywell Security 5800 contact jinja template #}
 # MQTT Sensor configuration for {{ device_manufacturer }} {{ device_model }} {{ device_name_pretty }} 
+# Description: {{ source.description }}
+# Comments: {{ source.model_comment }}
+# Area: {{ source.area }}
 #
-# Auto Generated from:
-# Template File: {{ template_source_file }}
+# Auto Generated from template: {{ template_source_file }}
 # Date Generated: {{ now() }}
 # 
 # source rtl_433 message for reference:
@@ -12,12 +14,15 @@
 #  "event" : 4, "state" : "closed", "contact_open" : 0, "reed_open" : 0,
 #  "alarm" : 0, "tamper" : 0, "battery_ok" : 1, "heartbeat" : 1, "mic" : "CRC",
 #  "mod" : "ASK", "freq" : 345.056, "rssi" : -0.165, "snr" : 18.575, "noise" : -18.740}
-
+#
+# 
+{% set foo = "Testing" %}
+{% set device_unavailable_seconds = 90 * 60 %}
 
 mqtt:
   binary_sensor:
-    - name: "{{ contact_short_name | title }}"  # TODO "Door"
-      object_id: "{{ device_name_safe + '_' + contact_short_name }}" # TODO "front_door_contact" 
+    - name: "{{ contact_short_name | title }}"  # "Door"
+      object_id: "{{ device_name_safe + '_' + contact_short_name }}" # "front_door_contact" 
       unique_id: "{{ device_unique_id + '_' + contact_short_name }}" # "rtl_433_honeywell_123456_contact"
       state_topic: "{{ device_topic + '/' + contact_sub_topic }}"    # "rtl_433/+/devices/Honeywell-Security/8/123456/contact_open"
       payload_on: 1 # open
@@ -67,6 +72,9 @@ mqtt:
       force_update: true # Needed?
       expire_after: "{{ device_unavailable_seconds }}"
       entity_category: diagnostic
-      # todo eventually should be disabled by default?
+      # TODO eventually should be disabled by default?
       device:
         identifiers: "{{ device_unique_id }}"
+
+{% include 'generic_battery_ok.j2' %}
+{% include 'generic_rssi_snr_noise.j2' %}

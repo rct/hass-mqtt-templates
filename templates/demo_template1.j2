@@ -1,0 +1,24 @@
+---
+#
+{# Demo Template -- this won't appear in output #}
+# Demo Template this text will appear in output
+# template for {{ device_manufacturer }} {{ device_model }} {{ device_name_pretty }} 
+# Description: {{ source.description }}
+# Comments: {{ source.model_comment }}
+# Area: {{ source.area }}
+#
+# Auto Generated from template: {{ template_source_file }}
+# Date Generated: {{ now() }}
+# 
+#
+# 
+{% set foo = "Testing" %}
+{% set device_unavailable_seconds = 90 * 60 %}
+
+# 
+# Source data 
+# {{ source }}
+# 
+
+# Yaml sanitize filter Demo
+# {{ "This is a Test/Topic" | yaml_sanitize }}

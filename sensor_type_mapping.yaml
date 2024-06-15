@@ -5,7 +5,13 @@
 sensor_templates:
     honeywell_security:
       - "honeywell_security_contact.j2"
-      - "generic_battery_ok.j2"
-      - "generic_rssi_snr_noise.j2"
+      # - "generic_battery_ok.j2"
+      # - "generic_rssi_snr_noise.j2"
 
+    dsc_security:
+      - "dsc_security_contact.j2"
+      # - "generic_battery_ok.j2"
+      # - "generic_rssi_snr_noise.j2"
 
+    demo_templates:
+      - "demo_template1.j2"
